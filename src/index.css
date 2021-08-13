@@ -13,6 +13,7 @@
 /* Nav Bar */
 .top-bar{
   border-bottom: solid;
+  /* border-style: solid; */
   border-width: .10em;
   padding: 2em;
   /* line-height: em; */
@@ -21,6 +22,9 @@
   text-decoration: none;
   text-decoration: none;
   display: flex;
+  height: 5.5em;
+
+  
 }
 .nav-link{
   color: rgb(85, 85, 124);
@@ -29,6 +33,10 @@
   display: inline-block;
   flex-direction: row;
   margin-top: 1em;
+  font-size: 1.5rem;
+  /* border-style: solid; */
+  align-items: left;
+
 }
 .logo-img{
   display:inline;
@@ -38,6 +46,17 @@
   padding-bottom: 1em;
   margin-bottom: -.5em;
   margin-top: -.5em;
+  /* float: left;
+  position:absolute; */
+  left: 0px;
+  /* border-style: solid; */
+}
+.session-comp{
+  margin: auto 0;
+  /* margin-left: 80%;
+  border-style: solid; */
+  /* position:fixed;
+  right: 0px; */
 
 }
 /* Search Component */

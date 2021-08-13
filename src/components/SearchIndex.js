@@ -14,34 +14,44 @@ function GetSearch () {
     const [value, setValue] = React.useState('')
     const [disable, setDisable] = React.useState(false)
 
+        //Check if session is true
+        // console.log(localStorage)
+        // if(localStorage.SessionEmail){
+        //     console.log(localStorage.SessionEmail)
+        // } else console.log('No user is logged in')
+    
     //function to provide search output
-    const backend_api = async () => {
+    const backend_api = async (query) => {
     //post to send search query to backend FMP API
         // setDisable(true)
 
-        console.log(value)
+        console.log(query)
         await Axios.post(
                 `http://localhost:4000/user`, {
-                    search_query: value 
+                    search_query: query
                 }
             )  
+        getbackend_data()
+    
     //fetch request to get data gathered from API call above
     //when done testing uncomment line below and remove line 29
         // let response = await fetch('http://localhost:4000/user/getsearch')
-        let response = await fetch('http://localhost:4000/user')
-        let data = await response.json()
+
+        // setDisable(false)
+    }
+    const getbackend_data = async () => {
         
+        let response = await fetch('http://localhost:4000/user')
+        console.log(response)
+        let data = await response.json()
         console.log(data)
         //Why doesn't the code below prevent the search from outputting previously queried data?
         if(data === searchData){
             setSearchData(null)
         } else {
+            console.log(data)
             setSearchData(data)
         }
-
-
- 
-        // setDisable(false)
     }
     //fetch data from backend api call for index random ticker, data includes company profile and news
 
@@ -53,14 +63,16 @@ function GetSearch () {
 
     }
     //Function to change index data
-    const index_update = async (event, query) => {
+    const index_update = async (query) => {
         
             console.log(query)
             await Axios.post(
                     `http://localhost:4000/user/indexchange`, {
-                        search_query: query 
+                        search: query 
                     }
-                )  
+            ) 
+
+            console.log('test index_update')
         //fetch request to get data gathered from API call above
         //when done testing uncomment line below and remove line 29
             // let response = await fetch('http://localhost:4000/user/getsearch')
@@ -71,14 +83,14 @@ function GetSearch () {
             setIndexData(data)
         }
     //Test if user inputs a compatible company name - currently works with bugs. Turned off at the moment
-    const test_api = () => {
-        console.log(searchData)
-        if(searchData.length == 0) {
-            alert('We could not find a stock with your query, please try a new company name (i.e. Google\'s parent company is Alphabet)')
-            // setSearchData([])
-        }
-        setDisable(false)
-    }
+    // const test_api = () => {
+    //     console.log(searchData)
+    //     if(searchData.length == 0) {
+    //         alert('We could not find a stock with your query, please try a new company name (i.e. Google\'s parent company is Alphabet)')
+    //         // setSearchData([])
+    //     }
+    //     // setDisable(false)
+    // }
     //Hide Index data once search is submitted - it lags a bit since backend api call has to be done
     const hide_element = async () => {
         const hide = document.getElementById("start")
@@ -120,10 +132,11 @@ function GetSearch () {
             <div className = "index-cards">
                 {/* Test if searchData has company data in it */}
                 {searchData.length > 0 ? <>
-
+                    {localStorage.SessionEmail ? <h4>Save your favorite stock from your search out below</h4>: <></>}
+                    <br/>
                     {searchData.map((value,index)=>{
                         const symbol_search = value.symbol
-                        console.log(value.symbol)
+                        console.log(symbol_search)
                         return(
                             <div className="ind-card" key = {index} >
                                 <h3>Company Name: {value.name}</h3>
@@ -131,7 +144,8 @@ function GetSearch () {
                                 <p>Symbol: {value.symbol}</p>
                                 <p>Currency: {value.currency}</p>
                                 {/* onClick={index_update(symbol_search)} ask help with including this during office hours*/}
-                                <button>Update the Sample Brief Below</button>
+                                <button onClick={()=>{index_update(symbol_search)}}>Update the Sample Brief Below</button>
+                                {localStorage.SessionEmail ? <button>Save to Favorites</button>: <></>}
                             </div>
 
                         )

@@ -3,8 +3,6 @@ import './App.css';
 import {Route, Switch} from 'react-router-dom'
 //Navigation Bar
 import NavBar from './components/NavBar'
-//Component
-import GetSearch from './components/SearchIndex';
 //Pages
 import Home from './pages/index'
 import Session from './pages/session'
@@ -28,7 +26,7 @@ function App() {
         <Home/>
       </Route>
     </Switch>
-    <GetSearch/>
+
     </>
   );
 }
