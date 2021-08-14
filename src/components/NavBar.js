@@ -15,10 +15,10 @@ function NavBar () {
     } else console.log('No user is logged in')
     const navStyle = {
         display: "flex",
-        justifyContent: "space-around",
         padding: '8px',
         width: "100%",
         margin: "auto"
+        // id_ed25519.pub
     }
     //Reload page when clicking on Sign In
     const pageReload = () => {
@@ -31,6 +31,9 @@ function NavBar () {
                 <img  src="https://i.imgur.com/o2y3phL.png" alt = "Logo of Market News Today" className='logo-img'/>
                     {/* <h1 className = 'nav-link'>Home</h1> */}
                 </Link>
+                <div className='session-comp' >
+                    <GoogleAuth />
+                </div>
                 {
                     localStorage.SessionEmail ? 
                     <>
@@ -42,9 +45,7 @@ function NavBar () {
                         </Link>
                     </> : <></>
                 }
-                <div className='session-comp' >
-                    <GoogleAuth />
-                </div>
+
 
 
             </nav>

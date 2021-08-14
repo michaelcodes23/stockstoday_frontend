@@ -64,23 +64,22 @@ function GetSearch () {
     }
     //Function to change index data
     const index_update = async (query) => {
-        
-            console.log(query)
-            await Axios.post(
-                    `http://localhost:4000/user/indexchange`, {
-                        search: query 
-                    }
-            ) 
-
-            console.log('test index_update')
-        //fetch request to get data gathered from API call above
-        //when done testing uncomment line below and remove line 29
-            // let response = await fetch('http://localhost:4000/user/getsearch')
-            let response = await fetch('http://localhost:4000/user/indexchange')
-            let data = await response.json()
             
-            console.log(data)
-            setIndexData(data)
+        console.log(query)
+        const response = await Axios.post(
+            `http://localhost:4000/user/indextest`,{
+                search: query
+            }
+        )
+
+        console.log('test index_update')
+    //fetch request to get data gathered from API call above
+        // let response = await fetch('http://localhost:4000/user')
+        // console.log(response)
+        // let data = await respon
+        
+        // console.log(data)
+        // setIndexData(data)
         }
     //Test if user inputs a compatible company name - currently works with bugs. Turned off at the moment
     // const test_api = () => {
@@ -136,7 +135,7 @@ function GetSearch () {
                     <br/>
                     {searchData.map((value,index)=>{
                         const symbol_search = value.symbol
-                        console.log(symbol_search)
+                        // console.log(symbol_search)
                         return(
                             <div className="ind-card" key = {index} >
                                 <h3>Company Name: {value.name}</h3>
