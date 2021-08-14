@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {Link} from 'react-router-dom'
 import GoogleAuth from '../components/Sessions'
 function NavBar () {
@@ -9,10 +9,6 @@ function NavBar () {
     //     console.log(refreshTest)
     //     console.log('testing')
     // }
-    console.log(localStorage)
-    if(localStorage.SessionEmail){
-        console.log(localStorage.SessionEmail)
-    } else console.log('No user is logged in')
     const navStyle = {
         display: "flex",
         padding: '8px',
@@ -21,9 +17,6 @@ function NavBar () {
         // id_ed25519.pub
     }
     //Reload page when clicking on Sign In
-    const pageReload = () => {
-        window.location.reload()
-    }
     return(
         <header>
              <nav style={navStyle} className="top-bar">

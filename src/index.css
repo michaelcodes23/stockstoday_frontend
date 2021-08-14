@@ -25,7 +25,6 @@
   justify-content: flex-start;
   height: 5.5em;
 
-  
 }
 .nav-link{
   color: rgb(85, 85, 124);
@@ -33,9 +32,9 @@
   text-decoration: none;
   display: inline-block;
   flex-direction: row;
-  margin-top: 1em;
-  font-size: 1.5rem;
-  /* border-style: solid; */
+  margin-top: 2em;
+  font-size: 1rem;
+  margin-left: 1.25em;
   align-items: left;
 
 }

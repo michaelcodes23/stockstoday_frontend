@@ -1,8 +1,12 @@
 import { React, useEffect, useState } from 'react'
 
-const FavStocks = () => {
+const FavStocks = ({name, ticker_data}) => {
+    
     //Sample Loop Through Array Below
     const [tickers, setTickers] = useState([])
+    console.log(name)
+    console.log(ticker_data)
+
 
     const searchAPI = async (ticker) => { //<------- INCLUDE async 
     // console.log(ticker)
@@ -14,6 +18,11 @@ const FavStocks = () => {
     setTickers(tickers => [...tickers,  data]) //SPREAD OPERATOR, pass each call of data into the array tickers
     }
 
+    const grabProfile = async (ticker) => {
+        const response = await fetch (
+            
+        )
+    }
     useEffect(() => {
     //IN THIS EXAMPLE, I AM DECLARING tickerLoop() INSIDE useEffect() TO REMOVE THE WARNING
     const tickerLoop = () => {
@@ -26,8 +35,6 @@ const FavStocks = () => {
     }, [])// <-------------- WITHOUT ", []" useEffect() WOULD CAUSE AN INFINITE LOOP! ", []" TELLS
         //                 useEffect() TO RUN ONLY ON THE INITIAL RENDER
 
-    console.log(`Here is tickers: ${tickers}`)
-
     const tickersList = tickers.map((element, i) => {
     return <h1 key={i}>{element[0].name}</h1>
     })
@@ -36,6 +43,7 @@ const FavStocks = () => {
             <h1>Show</h1>
             <header className="App-header">
                 {tickersList}
+
             </header>
         </>
  

@@ -1,25 +1,37 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import Axios from 'axios'
 import SearchBar from 'material-ui-search-bar';
+import * as VsIcons from 'react-icons/vsc'
 
 
-
-const {REACT_APP_KEY_1} = process.env
 
 function GetSearch () {
     //States
     const [indexData, setIndexData] = React.useState([])
     const [searchData, setSearchData] = React.useState([])
-    const [searchQuery, setSearchQuery] = React.useState(null)
     const [value, setValue] = React.useState('')
     const [disable, setDisable] = React.useState(false)
 
-        //Check if session is true
-        // console.log(localStorage)
-        // if(localStorage.SessionEmail){
-        //     console.log(localStorage.SessionEmail)
-        // } else console.log('No user is logged in')
-    
+    //Financial Modeling Prep Variables
+    const {REACT_APP_KEY} = process.env
+    const url = 'https://financialmodelingprep.com/api/v3/';
+    const limit = '&limit=5';
+    const news = 'stock_news?tickers='
+    //Backend API call to submit favorite Stock data
+    const addFavStocks = (symbol) =>{
+        fetch('http://localhost:4000/user/savefavorites', {
+        method: "post",
+        headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: localStorage.getItem('SessionEmail'),
+                name: localStorage.getItem('SessionName'),
+                ticker: symbol
+            }),
+        });
+    }
     //function to provide search output
     const backend_api = async (query) => {
     //post to send search query to backend FMP API
@@ -33,11 +45,6 @@ function GetSearch () {
             )  
         getbackend_data()
     
-    //fetch request to get data gathered from API call above
-    //when done testing uncomment line below and remove line 29
-        // let response = await fetch('http://localhost:4000/user/getsearch')
-
-        // setDisable(false)
     }
     const getbackend_data = async () => {
         
@@ -53,8 +60,25 @@ function GetSearch () {
             setSearchData(data)
         }
     }
-    //fetch data from backend api call for index random ticker, data includes company profile and news
 
+
+    const index_update = async (query) => {
+        let indx_array = []
+        const profile_response = await Axios.get(
+            `${url}profile/${query}?apikey=${REACT_APP_KEY}`
+        )
+        console.log('testing index_update')
+        indx_array.push({"Profile": profile_response.data, "Press_Release": "Great"})
+        // console.log(profile_response.data[0].companyName)
+        const news_response = await Axios.get(
+            `${url}${news}${query}${limit}&apikey=${REACT_APP_KEY}`
+        )
+        console.log(news_response)
+        indx_array[0].Press_Release = news_response.data
+        console.log(indx_array)
+        setIndexData(indx_array)
+    }
+    //fetch data from backend api call for index random ticker, data includes company profile and news
     const index_random = async () => {
         let response = await fetch('http://localhost:4000/user/tickerindex')
         let data = await response.json()
@@ -63,24 +87,7 @@ function GetSearch () {
 
     }
     //Function to change index data
-    const index_update = async (query) => {
-            
-        console.log(query)
-        const response = await Axios.post(
-            `http://localhost:4000/user/indextest`,{
-                search: query
-            }
-        )
 
-        console.log('test index_update')
-    //fetch request to get data gathered from API call above
-        // let response = await fetch('http://localhost:4000/user')
-        // console.log(response)
-        // let data = await respon
-        
-        // console.log(data)
-        // setIndexData(data)
-        }
     //Test if user inputs a compatible company name - currently works with bugs. Turned off at the moment
     // const test_api = () => {
     //     console.log(searchData)
@@ -91,16 +98,17 @@ function GetSearch () {
     //     // setDisable(false)
     // }
     //Hide Index data once search is submitted - it lags a bit since backend api call has to be done
-    const hide_element = async () => {
-        const hide = document.getElementById("start")
-        if (hide.style.display === "none"){
-            hide.style.display = "block";
-        } else {
-            hide.style.display = "none";
-        }
-    }
+    // const hide_element = async () => {
+    //     const hide = document.getElementById("start")
+    //     if (hide.style.display === "none"){
+    //         hide.style.display = "block";
+    //     } else {
+    //         hide.style.display = "none";
+    //     }
+    // }
     React.useEffect(()=> {
         index_random()
+
     }, [])
 
 
@@ -124,7 +132,7 @@ function GetSearch () {
                     value = {value}
                     disabled = {disable}
                     onChange = {(newValue) => setValue(newValue)}
-                    onRequestSearch={() => hide_element().then(backend_api(value))}
+                    onRequestSearch={() => backend_api(value)}
                 />
                 <p className="minor-text">Please wait ~3 seconds to submit another search. Give time for our algorithm to put in some work :)</p>
             </div>
@@ -144,7 +152,7 @@ function GetSearch () {
                                 <p>Currency: {value.currency}</p>
                                 {/* onClick={index_update(symbol_search)} ask help with including this during office hours*/}
                                 <button onClick={()=>{index_update(symbol_search)}}>Update the Sample Brief Below</button>
-                                {localStorage.SessionEmail ? <button>Save to Favorites</button>: <></>}
+                                {localStorage.SessionEmail ? <button onClick={()=>{addFavStocks(symbol_search)}}>Save to Favorites</button>: <></>}
                             </div>
 
                         )
@@ -159,28 +167,32 @@ function GetSearch () {
                 {indexData.length > 0 ? <>
                     <h2>Sample Company Brief:</h2>
                     <br/>
-                    <p>Log in / Sign Up to save your favorite companies and view additional info such as market cap, additional news articles, industry sector, and more! </p>
-                    <br/>
-                    <div className = "card-left">
-                        <h3>{indexData[0].Profile[0].companyName}</h3>
-                        <br/>
-                        <img  className = "stock-image" src = {indexData[0].Profile[0].image} alt = {indexData[0].Profile[0].companyName + " Logo"}/>
-                        <br/><br/>
-                        <p><strong>Ticker:</strong> {indexData[0].Profile[0].symbol}</p>
-                    </div>
-                    <div className = "card-right">
-                        <p><strong>Price: </strong>${indexData[0].Profile[0].price}</p>
-                        <p><strong>CEO: </strong>{indexData[0].Profile[0].ceo}</p>
-                    </div>
-                    <br/>
+                    {indexData[0].Profile.length > 0 ? <>
+                        <div className = "card-left">
+                            <p>Log in / Sign Up to save your favorite companies and view additional info such as market cap, additional news articles, industry sector, and more! </p>
+                            <br/>
+                            <h3>{indexData[0].Profile[0].companyName}</h3>
+                            <br/>
+                            <img  className = "stock-image" src = {indexData[0].Profile[0].image} alt = {indexData[0].Profile[0].companyName + " Logo"}/>
+                            <br/><br/>
+                            <p><strong>Ticker:</strong> {indexData[0].Profile[0].symbol}</p>
+                        </div>
+                        <div className = "card-right">
+                            <p><strong>Price: </strong>${indexData[0].Profile[0].price}</p>
+                            <p><strong>CEO: </strong>{indexData[0].Profile[0].ceo}</p>
+                            <br/>
+                        </div>
+                    </> : <h3>No data found for company profile</h3>}
+                    
                     <div className = "card-news">
-                        <h3>{indexData[0].Press_Release[0].title}</h3>
-                        <p style={{fontStyle: "italic"}} >Published Date: {indexData[0].Press_Release[0].publishedDate.substring(0,10)}</p>
-                        <a href = {indexData[0].Press_Release[0].url}><img  className = "news-image" src = {indexData[0].Press_Release[0].image} alt = "Article Image"/></a>
-                        <p className = 'card-news-body'>{indexData[0].Press_Release[0].text}</p>
+                        {indexData[0].Press_Release[0] ? <>
+                            <h3>{indexData[0].Press_Release[0].title}</h3>
+                            <p style={{fontStyle: "italic"}} >Published Date: {indexData[0].Press_Release[0].publishedDate.substring(0,10)}</p>
+                            <a href = {indexData[0].Press_Release[0].url}><img  className = "news-image" src = {indexData[0].Press_Release[0].image} alt = "Article"/></a>
+                            <p className = 'card-news-body'>{indexData[0].Press_Release[0].text}</p>
+                        
+                        </> : <h3>It appears no news articles were available for this company at the moment. Try a different stock <VsIcons.VscSmiley/></h3>}
                     </div>
-                    {/* <img src = ""/> */}
-                    {/* console.log(test.substring(0, 4)) */}
                     </> : <></>
                 }
             </div>

@@ -3,13 +3,11 @@ import {GoogleLogin} from 'react-google-login'
 import {GoogleLogout} from 'react-google-login'
 import {useHistory} from 'react-router-dom'
 
+const {REACT_APP_ClIENT_ID} = process.env
+
+
 const GoogleAuth = () => {
-    const [refreshTest, setRefreshTest] = React.useState(false)
-    const clickRefresh = () => {
-        setRefreshTest(!refreshTest)
-        console.log(refreshTest)
-        console.log('testing')
-    }
+
 	let history = useHistory();
 	console.log(localStorage.getItem('SessionEmail'))
 
@@ -24,13 +22,6 @@ const GoogleAuth = () => {
         window.location.reload()
 	}
 
-    const pageReload = () => {
-        window.location.reload()
-    }
-
-
-
-
 	const responseGoogleFail = (response) => {
 		console.log(response);
         
@@ -44,6 +35,7 @@ const GoogleAuth = () => {
 	// }
 	const logoutGoogle = () => {
 		console.log('logout was succcessful')
+
 		localStorage.removeItem('SessionEmail')
         localStorage.removeItem('SessionName')
 		history.push('/')
@@ -56,14 +48,14 @@ return (
 
 	{localStorage.getItem('SessionEmail') === null ? <>
 	<GoogleLogin
-	clientId = "233320979060-eihl14o55ip4gmfqj5lpm7hdauflm761.apps.googleusercontent.com"
+	clientId = {REACT_APP_ClIENT_ID}
 	onSuccess={responseGoogle}
 	onFailure={responseGoogleFail}
-    buttonText="Sign In"
+    buttonText="Sign Up / Sign In"
 	/>     </>
 	:
 	<GoogleLogout
-	clientId = "233320979060-eihl14o55ip4gmfqj5lpm7hdauflm761.apps.googleusercontent.com"
+	clientId = {REACT_APP_ClIENT_ID}
 	buttonText="Sign Out"
 	onLogoutSuccess={logoutGoogle}
 
