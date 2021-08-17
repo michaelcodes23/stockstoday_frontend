@@ -27,15 +27,8 @@ const GoogleAuth = () => {
         
 	}
 
-	// const logoutSucesss = () => {
-	// 	console.log(localStorage.getItem('SessionEmail'))
-	// 	localStorage.removeItem('SessionEmail');
-	// 	console.log('logged our successfully')
-
-	// }
 	const logoutGoogle = () => {
 		console.log('logout was succcessful')
-
 		localStorage.removeItem('SessionEmail')
         localStorage.removeItem('SessionName')
 		history.push('/')
@@ -48,6 +41,7 @@ return (
 
 	{localStorage.getItem('SessionEmail') === null ? <>
 	<GoogleLogin
+	className = "google-session"
 	clientId = {REACT_APP_ClIENT_ID}
 	onSuccess={responseGoogle}
 	onFailure={responseGoogleFail}
@@ -55,6 +49,7 @@ return (
 	/>     </>
 	:
 	<GoogleLogout
+	className = "google-session"
 	clientId = {REACT_APP_ClIENT_ID}
 	buttonText="Sign Out"
 	onLogoutSuccess={logoutGoogle}

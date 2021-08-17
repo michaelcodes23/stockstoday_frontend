@@ -1,7 +1,7 @@
 import React from 'react';
-import Axios from 'axios'
+import Axios from 'axios';
 import SearchBar from 'material-ui-search-bar';
-import * as VsIcons from 'react-icons/vsc'
+import * as VsIcons from 'react-icons/vsc';
 
 
 
@@ -139,7 +139,7 @@ function GetSearch () {
             <div className = "index-cards">
                 {/* Test if searchData has company data in it */}
                 {searchData.length > 0 ? <>
-                    {localStorage.SessionEmail ? <h4>Save your favorite stock from your search out below</h4>: <></>}
+                    {localStorage.SessionEmail ? <h3>Save your favorite stock from your search out below</h3>: <></>}
                     <br/>
                     {searchData.map((value,index)=>{
                         const symbol_search = value.symbol
@@ -194,8 +194,8 @@ function GetSearch () {
                         </> : <h3>It appears no news articles were available for this company at the moment. Try a different stock <VsIcons.VscSmiley/></h3>}
                     </div>
                     </> : <></>
-                }
-            </div>
+                        }
+                     </div>
 
         </div>
         

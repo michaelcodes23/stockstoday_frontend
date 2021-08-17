@@ -18,8 +18,8 @@ const Show = () => {
             const session_info = []
             console.log(localStorage.getItem('SessionEmail'))
             data.forEach((value)=>{
-                console.log(value)
-                console.log(value.email)
+                // console.log(value)
+                // console.log(value.email)
                 if(value.email === localStorage.SessionEmail){
                     session_info.push(value)
                 }
@@ -39,11 +39,11 @@ const Show = () => {
     },[])
     return (
         <div className="show-body">
-            {sessionData.length > 0 ?
+            {sessionData.length > 0 &&  sessionData[0].tickerarray.length > 0?
                 <>
                 {console.log(sessionData[0])}
                 {/* Pass props for name and ticker data to component */}
-                <FavStocks name = {sessionData[0].name} ticker_data = {sessionData[0].tickerarray}/> 
+                <FavStocks name = {sessionData[0].name} ticker_data = {sessionData[0].tickerarray} session_id = {sessionData[0]._id}/> 
                 </> 
 :
                 <>

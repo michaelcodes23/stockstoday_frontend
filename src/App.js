@@ -8,6 +8,8 @@ import Home from './pages/index'
 import Session from './pages/session'
 import Show from './pages/userShow'
 import Edit from './pages/edit'
+import ShowDetails from './pages/show_details'
+
 function App() {
   return (
     <>
@@ -21,6 +23,9 @@ function App() {
       </Route>
       <Route path = '/edit'>
         <Edit/>
+      </Route>
+      <Route path = '/show_details'>
+        <ShowDetails/>
       </Route>
       <Route path = '/'>
         <Home/>

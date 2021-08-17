@@ -1,50 +1,75 @@
 import { React, useEffect, useState } from 'react'
+import {useHistory} from 'react-router-dom'
+import * as AiIcons from 'react-icons/ai'
+import Axios from 'axios';
 
-const FavStocks = ({name, ticker_data}) => {
+const FavStocks = ({name, ticker_data, session_id}) => {
+    //Backend API Call to Delete Stock
+
+    const deleteStock = async (data) => {
+        await Axios.patch(`http://localhost:4000/user/${session_id}`,{
+            ticker: data
+        })
+        window.location.reload()
+    }
     
+    //Financial Model API Info
+    let history = useHistory();
+    const url = 'https://financialmodelingprep.com/api/v3/';
+    const {REACT_APP_KEY} = process.env
     //Sample Loop Through Array Below
     const [tickers, setTickers] = useState([])
-    console.log(name)
-    console.log(ticker_data)
 
 
-    const searchAPI = async (ticker) => { //<------- INCLUDE async 
-    // console.log(ticker)
-    const response = await fetch(
-        `https://financialmodelingprep.com/api/v3/search?query=${ticker}&limit=1&exchange=NASDAQ&apikey=4ce17515280c1c44fabfbd11465b01a6`
-    )
-    const data = await response.json()
-    console.log(data)
-    setTickers(tickers => [...tickers,  data]) //SPREAD OPERATOR, pass each call of data into the array tickers
-    }
 
     const grabProfile = async (ticker) => {
+        console.log('Testing grabbing profile api')
         const response = await fetch (
-            
+            `${url}profile/${ticker}?apikey=${REACT_APP_KEY}`
         )
+        const data = await response.json()
+        // console.log(data)
+        setTickers(tickers => [...tickers, data]) //SPREAD OPERATOR, pass each call of data into the array tickers
     }
-    useEffect(() => {
-    //IN THIS EXAMPLE, I AM DECLARING tickerLoop() INSIDE useEffect() TO REMOVE THE WARNING
-    const tickerLoop = () => {
-        const arr = ['AAPL', 'GOOG', 'AMZN', 'MSFT', 'TSLA']
-        arr.forEach(element => {
-        searchAPI(element)
+    const profileLoop = () => {
+        ticker_data.forEach(element => {
+            grabProfile(element)
         })
     }
-    tickerLoop()
+    const navtoDetails = (symbol) =>{
+        history.push('/show_details')
+        console.log(symbol)
+        localStorage.setItem('stockDetail', symbol)
+        console.log(localStorage)
+    }
+    useEffect(() => {
+    //IN THIS EXAMPLE, I AM DECLARING profileLoop() INSIDE useEffect() TO REMOVE THE WARNING
+        profileLoop()
     }, [])// <-------------- WITHOUT ", []" useEffect() WOULD CAUSE AN INFINITE LOOP! ", []" TELLS
         //                 useEffect() TO RUN ONLY ON THE INITIAL RENDER
 
     const tickersList = tickers.map((element, i) => {
-    return <h1 key={i}>{element[0].name}</h1>
+        // console.log(element)
+        let stock_symbol = element[0].symbol
+    return (
+
+        <div className="show-fav" key = {i}>
+            <h3 key={i} className = 'fav-title'>{element[0].companyName}</h3>
+            <img  className = "fav-stock-image" src = {element[0].image} alt = {element[0].companyName + " Logo"}/>
+            <p className="fav-ticker">Ticker: {element[0].symbol}</p>
+            <button className = "button is-info fav-button" onClick={()=>{navtoDetails(stock_symbol)}} >View Details</button>
+            <button className = "button is-danger fav-button" onClick={()=>{deleteStock(stock_symbol)}}>Delete Stock</button>
+        </div>
+
+    )
     })
     return (
         <>
-            <h1>Show</h1>
-            <header className="App-header">
+            <h1>Welcome, {name}. Please see your favorite stocks below <AiIcons.AiOutlineStock/></h1>
+            <div className="fav-container">
                 {tickersList}
 
-            </header>
+            </div>
         </>
  
     )
