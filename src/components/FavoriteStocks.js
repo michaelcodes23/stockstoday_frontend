@@ -53,7 +53,7 @@ const FavStocks = ({name, ticker_data, session_id}) => {
         let stock_symbol = element[0].symbol
     return (
 
-        <div className="show-fav" key = {i}>
+        <div className="show-fav card" key = {i}>
             <h3 key={i} className = 'fav-title'>{element[0].companyName}</h3>
             <img  className = "fav-stock-image" src = {element[0].image} alt = {element[0].companyName + " Logo"}/>
             <p className="fav-ticker">Ticker: {element[0].symbol}</p>
@@ -64,13 +64,14 @@ const FavStocks = ({name, ticker_data, session_id}) => {
     )
     })
     return (
-        <>
-            <h1>Welcome, {name}. Please see your favorite stocks below <AiIcons.AiOutlineStock/></h1>
-            <div className="fav-container">
+        <div className = "container fav-stock-container">
+            <h1>Welcome, {name}</h1>
+            <h2>Please see your favorite stocks below <AiIcons.AiOutlineStock/></h2>
+            <div className="fav-container card">
                 {tickersList}
 
             </div>
-        </>
+        </div>
  
     )
 };

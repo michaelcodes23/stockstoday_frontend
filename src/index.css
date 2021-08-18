@@ -1,4 +1,4 @@
-@import "https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css";
+/* @import "https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"; */
 
 *,
 *::before,
@@ -11,18 +11,13 @@
 :root {
   --clr-fm: #a5abb1;
   --fs-fm: 0.80rem;
+  --fs--h1: 3rem;
+  --fs-h2: 2.25rem;
+  --fs-h3: 1.25rem;
+  --fs-body: 1rem;
 }
-h1{
-  font-size: 3rem;
-}
-h2{
-  font-size: 2rem;
-}
-h3{
-  font-size: 1.5rem;
-}
-p{
-  font-size: 1rem;
+html{
+  scroll-behavior: smooth;
 }
 /* Nav Bar */
 .top-bar{
@@ -76,7 +71,7 @@ p{
   padding: 3em 3em;
 }
 .search-bar{
-  max-width: 80%;
+  min-width: 80%;
   margin: 0 auto;
 }
 .minor-text{
@@ -84,6 +79,9 @@ p{
   font-style: italic;
   font-size: var(--fs-fm);
   margin-top: 0.8em;
+}
+.details-italic{
+  color: var(--clr-fm);
 }
 @media (max-width: 600px){
   .search-bar{
@@ -93,58 +91,171 @@ p{
     padding: 3em 1.5em;
   }
 }
-
-@media(min-width: 900px){
-  .search-bar{
-    max-width: 50%;
-  }
+/* body of pages */
+body{
+  font-size: var(--fs-body);
+}
+h1{
+  font-size: var(--fs--h1);
+}
+h2{
+  font-size: var(--fs-h2);
+}
+h3{
+  font-size: var(--fs-h3);
 }
 
-/* Show Page Elements */
-
-.fav-container{
-  background-color: #fff;
-  border-style:solid;
-  border-color: rgb(196, 192, 192);
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  font-size: calc(10px + 2vmin);
-  justify-content: center;
+/* Index elements */
+.container{
+  padding: 2em 2em;
+}
+.index-cards{
+  margin-top: 1em;
+}
+.ind-card{
+  padding: 1em;
+  height: 15em;
+  padding-top: auto 0;
+  border-radius: 25px;
+}
+.buttons{
+  margin-top: 0.5em;
+}
+.session-none{
+  position: absolute;
+  width: 80%;
+  margin: 0 auto;
+  padding: 1em 2em;
+  font-weight: bold;
+  height: 5em;
+  border-radius: 25px;
   
 }
+.index-news{
+  padding: 2em 2em;
+  border-radius: 25px;
+  margin-top: 4em;
+}
+.news{
+  margin-bottom: 0.10em;
+}
+.news-title:hover{
+  text-decoration: underline;
+}
+.news-image, .stock-image{
+  height: 8em;
+  width: auto;
+}
+.fav-stock-image{
+  width: 6em;
+  height: auto;
+}
+.stock-image, .fav-stock-image{
+  /* box-shadow: 2px 2px 2px #000000; */
+  box-shadow: 0 0 3px #1b3881, 0 0 5px #000000;
+  margin-top: 0;
+}
+/* Show Page Elements */
+.fav-stock-container{
+  text-align: center;
+  margin:  0 auto;
+}
+.fav-container{
+  border-radius: 25px;
+  padding: 0.25em 0.25em;
+}
+
 .show-fav{
   cursor: pointer;
-  flex: 1 0 25%;
-  border-style:solid;
-  border-color: rgb(196, 192, 192);
   padding: 5px;
   margin: 0.25em; 
   text-align: center;
-  height: 11em;
-  max-width: 33%;
-
+  border-radius: 25px;
 }
 .fav-title{
-  font-size: 1.5rem;
   margin-bottom: .25em;
 }
-.fav-stock-image{
-  width: 2em;
-  height: auto;
-}
+
 .fav-button{
   margin: 0.25em;
 }
 .fav-title, .fav-stock-image :hover {
   font-size: 1.75rem;
 }
+/* Show Details */
+.container-showdetails{
+  padding: 2em 1em;
+}
+.details-right, .details-left, .details-news{
+  padding: 0.5em 1em;
+  margin: 1em;
+}
+.details-news-card{
+  padding: 1em .75em;
+  margin-bottom: 1em;
+  border-radius: 25px;
+}
+/* .details-chart{
+  height: 2em;
+  width: auto;
+  display: block;
+} */
+/* Media / Responsive CSS */
 
+@media(min-width: 800px){
+  .search-bar{
+    max-width: 50%;
+  }
+  .index-cards{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+
+  }
+  :root{
+    --fs--h1: 4.5rem;
+    --fs-h2: 3.75rem;
+    --fs-h3: 1.5rem;
+    --fs-body: 1.125rem;
+  }
+  .fav-container{
+    border-color: rgb(196, 192, 192);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+  .show-fav{
+    flex: 1 0 25%;
+    max-width: 33%;
+  }
+  .details-top{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .details-left{
+    padding-top: 0.25em;
+    min-width: 30%;
+  }
+  .details-right{
+    padding-top: 1em;
+    min-width: 64%;
+  }
+}
 @media(max-width: 600px){
   h1{
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     margin: 1em;
+  }
+  h2{
+    font-size: 2rem
+  }
+  h3{
+    font-size: 1.5rem
   }
   .show-fav{
     flex: 1 0 100%;
@@ -162,5 +273,29 @@ p{
     min-width: 100%;
     height: 3em;
     display: block;
+  }
+  .container{
+    padding: 2em 1em;
+
+  }
+  .index-cards{
+    margin-top: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    /* place-items: center; */
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    /* margin-left: 0;
+    position: relative; */
+  }
+  .ind-card{
+    height: 20em;
+    max-width: 80%;
+    border-radius: 25px;
+    padding-bottom: 1em;
+  }
+  .index-news{
+    padding: 1em 0.5em;
+    border-radius: 25px;
   }
 }

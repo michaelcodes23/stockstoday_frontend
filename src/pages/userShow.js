@@ -12,7 +12,7 @@ const Show = () => {
     } else console.log('No user is logged in')
     const getAllData = async () =>{
         if(localStorage.getItem('SessionEmail') !== null){
-            let response = await fetch ('http://localhost:4000/user/alldata')
+            let response = await fetch ('http://localhost:4000/user/')
             let data = await response.json()
     
             const session_info = []

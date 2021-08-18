@@ -17,6 +17,7 @@ function GetSearch () {
     const url = 'https://financialmodelingprep.com/api/v3/';
     const limit = '&limit=5';
     const news = 'stock_news?tickers='
+    const api_search = 'search?query=';
     //Backend API call to submit favorite Stock data
     const addFavStocks = (symbol) =>{
         fetch('http://localhost:4000/user/savefavorites', {
@@ -32,36 +33,17 @@ function GetSearch () {
             }),
         });
     }
-    //function to provide search output
-    const backend_api = async (query) => {
-    //post to send search query to backend FMP API
-        // setDisable(true)
 
-        console.log(query)
-        await Axios.post(
-                `http://localhost:4000/user`, {
-                    search_query: query
-                }
-            )  
-        getbackend_data()
-    
-    }
-    const getbackend_data = async () => {
-        
-        let response = await fetch('http://localhost:4000/user')
-        console.log(response)
-        let data = await response.json()
-        console.log(data)
-        //Why doesn't the code below prevent the search from outputting previously queried data?
-        if(data === searchData){
-            setSearchData(null)
-        } else {
+    const getSearchData = async (query) => {
+            const response = await fetch(
+                `${url}${api_search}${query}${limit}&apikey=${REACT_APP_KEY}`
+            )
+            const data = await response.json()
             console.log(data)
             setSearchData(data)
-        }
     }
 
-
+    //Function to change index news
     const index_update = async (query) => {
         let indx_array = []
         const profile_response = await Axios.get(
@@ -86,41 +68,17 @@ function GetSearch () {
         setIndexData(data)
 
     }
-    //Function to change index data
 
-    //Test if user inputs a compatible company name - currently works with bugs. Turned off at the moment
-    // const test_api = () => {
-    //     console.log(searchData)
-    //     if(searchData.length == 0) {
-    //         alert('We could not find a stock with your query, please try a new company name (i.e. Google\'s parent company is Alphabet)')
-    //         // setSearchData([])
-    //     }
-    //     // setDisable(false)
-    // }
-    //Hide Index data once search is submitted - it lags a bit since backend api call has to be done
-    // const hide_element = async () => {
-    //     const hide = document.getElementById("start")
-    //     if (hide.style.display === "none"){
-    //         hide.style.display = "block";
-    //     } else {
-    //         hide.style.display = "none";
-    //     }
-    // }
     React.useEffect(()=> {
         index_random()
 
     }, [])
 
 
-    // Things to do:
-    // 1. Send request to backend to gather data on search
-    // 2. Create output of max 5 companies for users to select
-    // 3. Once user selects company, output stock, stock price, ticker, open price, closing price, icon, and 1 news article
-    // 4. Add footer to ask people to sign in to have additional info on stock history / trends, more news articles, and be able to save favorite stocks
     return (
         <div className = 'container index-container'>
             <div className = "search-container">
-                <h1>Welcome to Market Today</h1>
+                <h1><strong>Welcome to <br/> Market News Today</strong></h1>
                 <h3>Your app to keep you up to date on your favorite stocks!</h3>
 
                 <br/><br/>
@@ -132,38 +90,43 @@ function GetSearch () {
                     value = {value}
                     disabled = {disable}
                     onChange = {(newValue) => setValue(newValue)}
-                    onRequestSearch={() => backend_api(value)}
+                    onRequestSearch={() => getSearchData(value)}
                 />
                 <p className="minor-text">Please wait ~3 seconds to submit another search. Give time for our algorithm to put in some work :)</p>
+                {localStorage.SessionEmail ? <h3>Save your favorite stock from your search out below</h3>: <></>}
             </div>
+            
             <div className = "index-cards">
                 {/* Test if searchData has company data in it */}
                 {searchData.length > 0 ? <>
-                    {localStorage.SessionEmail ? <h3>Save your favorite stock from your search out below</h3>: <></>}
+                    
                     <br/>
                     {searchData.map((value,index)=>{
                         const symbol_search = value.symbol
                         // console.log(symbol_search)
                         return(
-                            <div className="ind-card" key = {index} >
-                                <h3>Company Name: {value.name}</h3>
+                            <div className="ind-card card"style = {{width: "20em", margin: "2em"}} key = {index} >
+                                <h3>{value.name}</h3>
                                 <p>Stock Exchange: {value.exchangeShortName}</p>
                                 <p>Symbol: {value.symbol}</p>
                                 <p>Currency: {value.currency}</p>
                                 {/* onClick={index_update(symbol_search)} ask help with including this during office hours*/}
-                                <button onClick={()=>{index_update(symbol_search)}}>Update the Sample Brief Below</button>
-                                {localStorage.SessionEmail ? <button onClick={()=>{addFavStocks(symbol_search)}}>Save to Favorites</button>: <></>}
+                                <div className="buttons">
+                                    <button onClick={()=>{index_update(symbol_search)}}className = "button is-link is-dark is-small">Update Sample Below</button>
+                                    {localStorage.SessionEmail ? <button onClick={()=>{addFavStocks(symbol_search)}} className = "button is-info is-small">Save to Favorites</button>: <></>}
+                                </div>
+                               
                             </div>
 
                         )
                     })}
                 </> : 
-                <p>No company stock data gathered. Please make sure you query in 
+                <p className = "session-none card">No company stock data gathered. Please query in 
                 the search bar for parent company names, i.e. Yum is the parent 
                 company to KFC </p>
                 }
             </div>
-            <div className = "index-start" id="start">
+            <div className = "index-news card" id="start">
                 {indexData.length > 0 ? <>
                     <h2>Sample Company Brief:</h2>
                     <br/>
@@ -171,7 +134,7 @@ function GetSearch () {
                         <div className = "card-left">
                             <p>Log in / Sign Up to save your favorite companies and view additional info such as market cap, additional news articles, industry sector, and more! </p>
                             <br/>
-                            <h3>{indexData[0].Profile[0].companyName}</h3>
+                            <h3><strong>{indexData[0].Profile[0].companyName}</strong></h3>
                             <br/>
                             <img  className = "stock-image" src = {indexData[0].Profile[0].image} alt = {indexData[0].Profile[0].companyName + " Logo"}/>
                             <br/><br/>
@@ -186,10 +149,10 @@ function GetSearch () {
                     
                     <div className = "card-news">
                         {indexData[0].Press_Release[0] ? <>
-                            <h3>{indexData[0].Press_Release[0].title}</h3>
-                            <p style={{fontStyle: "italic"}} >Published Date: {indexData[0].Press_Release[0].publishedDate.substring(0,10)}</p>
-                            <a href = {indexData[0].Press_Release[0].url}><img  className = "news-image" src = {indexData[0].Press_Release[0].image} alt = "Article"/></a>
-                            <p className = 'card-news-body'>{indexData[0].Press_Release[0].text}</p>
+                            <a href = {indexData[0].Press_Release[0].url}><h3 className="news news-title">{indexData[0].Press_Release[0].title}</h3></a>
+                            <p className="news" style={{fontStyle: "italic"}} >Published Date: {indexData[0].Press_Release[0].publishedDate.substring(0,10)}</p>
+                            <a className="news" href = {indexData[0].Press_Release[0].url}><img  className = "news-image" src = {indexData[0].Press_Release[0].image} alt = "Article"/></a>
+                            <p className="news" className = 'card-news-body'>{indexData[0].Press_Release[0].text}</p>
                         
                         </> : <h3>It appears no news articles were available for this company at the moment. Try a different stock <VsIcons.VscSmiley/></h3>}
                     </div>

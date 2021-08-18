@@ -7,7 +7,6 @@ const Index = () => {
     } else console.log('No user is logged in')
     return (
         <>
-            <h1>Index</h1>
             <GetSearch/>
         </>
 
