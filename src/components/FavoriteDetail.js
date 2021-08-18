@@ -122,12 +122,19 @@ const FavDetails = () => {
                         <p><strong>High: </strong>${showData[0].Historical_Price[0].high}</p>
                         <p><strong>Low: </strong>${showData[0].Historical_Price[0].low}</p>
                         <p><strong>Gain / loss for 100 stocks invested 5 years ago: </strong>
-                        {showData[0].Net > 0 ?
+                        {showData[0].Net> 0 ?
                         <span className = "details-netPositive">${Math.round(showData[0].Net * 100).toLocaleString("en-US")}</span>
                         : <span className = 'details-netNegative'>${Math.round(showData[0].Net*100).toLocaleString("en-US")}</span>
                         }</p>
                         <p className = "details-italic">(Stock Price on {showData[0].Historical_Price[1].label}: ${showData[0].Historical_Price[1].close.toFixed(2)})</p>
-                        <p><strong>Stock Grade: </strong>{showData[0].Stock_Grade.newGrade} <span className = "details-italic"></span>(Source: {showData[0].Stock_Grade.gradingCompany})</p>
+                        {showData[0].Stock_Grade ? 
+                            <p><strong>Stock Grade: </strong>{showData[0].Stock_Grade.newGrade} <span className = "details-italic"></span>(Source: {showData[0].Stock_Grade.gradingCompany})</p>
+                        
+                        : 
+                            <p><strong>Stock Grade: </strong>Not Available</p>
+                        
+                        }
+                        
                     </div>
                 </div>
                 {/* <div className = "details-chart chart">
