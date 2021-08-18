@@ -1,6 +1,7 @@
 
 import './App.css';
 import {Route, Switch} from 'react-router-dom'
+import { React, useEffect, useState } from 'react'
 //Navigation Bar
 import NavBar from './components/NavBar'
 //Pages
@@ -11,6 +12,8 @@ import Edit from './pages/edit'
 import ShowDetails from './pages/show_details'
 
 function App() {
+  
+
   return (
     <>
     <NavBar/>

@@ -11,7 +11,8 @@ function GetSearch () {
     const [searchData, setSearchData] = React.useState([])
     const [value, setValue] = React.useState('')
     const [disable, setDisable] = React.useState(false)
-
+    //Backend Link
+    const backend_url = 'https://marketnewstoday-backend.herokuapp.com/user' || 'http://localhost:4000/user/'
     //Financial Modeling Prep Variables
     const {REACT_APP_KEY} = process.env
     const url = 'https://financialmodelingprep.com/api/v3/';
@@ -20,7 +21,7 @@ function GetSearch () {
     const api_search = 'search?query=';
     //Backend API call to submit favorite Stock data
     const addFavStocks = (symbol) =>{
-        fetch('http://localhost:4000/user/savefavorites', {
+        fetch(`${backend_url}/savefavorites`, {
         method: "post",
         headers: {
                 Accept: "application/json",
@@ -61,22 +62,25 @@ function GetSearch () {
         setIndexData(indx_array)
     }
     //fetch data from backend api call for index random ticker, data includes company profile and news
-    const index_random = async () => {
-        let response = await fetch('http://localhost:4000/user/tickerindex')
-        let data = await response.json()
-        console.log(data)
-        setIndexData(data)
+    // const index_random = async () => {
+    //     let response = await fetch(`http://localhost:4000/user/tickerindex`)
+    //     let data = await response.json()
+    //     console.log(data)
+    //     setIndexData(data)
 
-    }
+    // }
 
     React.useEffect(()=> {
-        index_random()
+        let index_tickers = ['AAPL', 'NFLX', 'MSFT','JPM', 'AMZN']
+        const rand_ticker = index_tickers[Math.floor(Math.random()* index_tickers.length)]
+        index_update(rand_ticker)
 
     }, [])
 
 
     return (
-        <div className = 'container index-container'>
+        <div>
+            <div className = 'container index-container'>
             <div className = "search-container">
                 <h1><strong>Welcome to <br/> Market News Today</strong></h1>
                 <h3>Your app to keep you up to date on your favorite stocks!</h3>
@@ -161,6 +165,8 @@ function GetSearch () {
                      </div>
 
         </div>
+        </div>
+        
         
     )
 }

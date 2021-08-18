@@ -1,13 +1,15 @@
-import { React, useEffect, useState } from 'react'
-import {useHistory} from 'react-router-dom'
-import * as AiIcons from 'react-icons/ai'
+import React from 'react'
+import { useEffect, useState } from 'react';
+import {useHistory} from 'react-router-dom';
+import * as AiIcons from 'react-icons/ai';
+
 import Axios from 'axios';
 
 const FavStocks = ({name, ticker_data, session_id}) => {
     //Backend API Call to Delete Stock
-
+    const backend_url = 'https://marketnewstoday-backend.herokuapp.com/user' || 'http://localhost:4000/user/'
     const deleteStock = async (data) => {
-        await Axios.patch(`http://localhost:4000/user/${session_id}`,{
+        await Axios.patch(`${backend_url}${session_id}`,{
             ticker: data
         })
         window.location.reload()
@@ -19,6 +21,8 @@ const FavStocks = ({name, ticker_data, session_id}) => {
     const {REACT_APP_KEY} = process.env
     //Sample Loop Through Array Below
     const [tickers, setTickers] = useState([])
+    //Loader State
+
 
 
 
@@ -35,6 +39,7 @@ const FavStocks = ({name, ticker_data, session_id}) => {
         ticker_data.forEach(element => {
             grabProfile(element)
         })
+   
     }
     const navtoDetails = (symbol) =>{
         history.push('/show_details')
@@ -64,14 +69,20 @@ const FavStocks = ({name, ticker_data, session_id}) => {
     )
     })
     return (
-        <div className = "container fav-stock-container">
-            <h1>Welcome, {name}</h1>
-            <h2>Please see your favorite stocks below <AiIcons.AiOutlineStock/></h2>
-            <div className="fav-container card">
-                {tickersList}
 
-            </div>
-        </div>
+
+                <div className = "container fav-stock-container">
+                <h1>Welcome, {name}</h1>
+                <h2>Please see your favorite stocks below <AiIcons.AiOutlineStock/></h2>
+                <div className="fav-container card">
+                    {tickersList}
+
+                </div>
+                </div>
+   
+            
+
+        
  
     )
 };
