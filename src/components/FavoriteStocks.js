@@ -9,7 +9,7 @@ const FavStocks = ({name, ticker_data, session_id}) => {
     //Backend API Call to Delete Stock
     const backend_url = 'https://marketnewstoday-backend.herokuapp.com/user' || 'http://localhost:4000/user/'
     const deleteStock = async (data) => {
-        await Axios.patch(`${backend_url}${session_id}`,{
+        await Axios.patch(`${backend_url}/${session_id}`,{
             ticker: data
         })
         window.location.reload()
