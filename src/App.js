@@ -2,6 +2,7 @@
 import './App.css';
 import {Route, Switch} from 'react-router-dom'
 import { React, useEffect, useState } from 'react'
+import * as IoIcons from 'react-icons/io'
 //Navigation Bar
 import NavBar from './components/NavBar'
 //Pages
@@ -34,7 +35,9 @@ function App() {
         <Home/>
       </Route>
     </Switch>
-
+    <footer> &copy; Michael Codes. Comments? Feedback? Please reach out to me via LinkedIn
+    <a href = "mailto:cuencamich@gmail.com" id = "icon"><IoIcons.IoLogoLinkedin className= 'icon'  /></a>
+    </footer>
     </>
   );
 }

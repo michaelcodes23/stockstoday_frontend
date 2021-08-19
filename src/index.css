@@ -122,7 +122,16 @@ h2{
 h3{
   font-size: var(--fs-h3);
 }
+footer{
+  text-align: center;
+  margin-bottom: 1em;
+}
+.icon{
 
+  margin-left: 0.25em;
+  height: 3em;
+  width: auto;
+}
 /* Index elements */
 .container{
   padding: 2em 2em;
