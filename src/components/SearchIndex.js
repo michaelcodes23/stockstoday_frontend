@@ -6,6 +6,14 @@ import * as VsIcons from 'react-icons/vsc';
 
 
 function GetSearch () {
+    // Test Django backend call 
+    const djangoBackend = async () => {
+        const data = await Axios.get(
+            `http://localhost:8000/api/users/`
+        )
+        console.log('django_backend', data)
+    }
+
     //States
     const [indexData, setIndexData] = React.useState([])
     const [searchData, setSearchData] = React.useState([])
@@ -74,7 +82,7 @@ function GetSearch () {
         let index_tickers = ['AAPL', 'NFLX', 'MSFT','JPM', 'AMZN']
         const rand_ticker = index_tickers[Math.floor(Math.random()* index_tickers.length)]
         index_update(rand_ticker)
-
+        djangoBackend()
     }, [])
 
 
