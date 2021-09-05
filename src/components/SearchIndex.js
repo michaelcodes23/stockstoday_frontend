@@ -6,12 +6,13 @@ import * as VsIcons from 'react-icons/vsc';
 
 
 function GetSearch () {
-    // Test Django backend call 
+     //Backend API call to submit favorite Stock data
     const djangoBackend = async () => {
         const data = await Axios.get(
             `http://localhost:8000/api/users/`
         )
         console.log('django_backend', data)
+        console.log(data.data[0])
     }
 
     //States
@@ -27,20 +28,17 @@ function GetSearch () {
     const limit = '&limit=5';
     const news = 'stock_news?tickers='
     const api_search = 'search?query=';
-    //Backend API call to submit favorite Stock data
-    const addFavStocks = (symbol) =>{
-        fetch(`${backend_url}/savefavorites`, {
-        method: "post",
-        headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                email: localStorage.getItem('SessionEmail'),
+  
+
+    const djangoAddFav = async (symbol) => {
+        Axios.post(
+            `http://localhost:8000/api/users/`,{
                 name: localStorage.getItem('SessionName'),
+                email: localStorage.getItem('SessionEmail'),
                 ticker: symbol
-            }),
-        });
+            }
+        )
+
     }
 
     const getSearchData = async (query) => {
@@ -125,7 +123,8 @@ function GetSearch () {
                                 {/* onClick={index_update(symbol_search)} ask help with including this during office hours*/}
                                 <div className="buttons">
                                     <button onClick={()=>{index_update(symbol_search)}}className = "button is-link is-dark is-small">Update Sample Below</button>
-                                    {localStorage.SessionEmail ? <button onClick={()=>{addFavStocks(symbol_search)}} className = "button is-info is-small">Save to Favorites</button>: <></>}
+                                    {/* {localStorage.SessionEmail ? <button onClick={()=>{addFavStocks(symbol_search)}} className = "button is-info is-small">Save to Favorites</button>: <></>} */}
+                                    {localStorage.SessionEmail ? <button onClick={()=>{djangoAddFav(symbol_search)}} className = "button is-info is-small">Save to Favorites</button>: <></>}
                                 </div>
                                
                             </div>
