@@ -302,6 +302,7 @@ footer{
 
   }
   .nav-link{
+    margin-top: 2.3em;
     font-size: .70rem;
   }
   .google-session{
