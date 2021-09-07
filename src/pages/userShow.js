@@ -3,10 +3,13 @@ import FavStocks from '../components/FavoriteStocks';
 import * as FaIcons from 'react-icons/fa';
 import ReactLoading from 'react-loading';
 import Axios from 'axios';
+import {useHistory} from 'react-router-dom'
 
 const Show = () => {
+    let history = useHistory();
     //Backend Link
-    const backend_url = 'https://marketnewstoday-backend.herokuapp.com/user' || 'http://localhost:4000/user/'
+    const backend_url = 'https://marketnewstoday-djangobackend.herokuapp.com' || 'http://localhost:8000'
+    // const backend_url = 'https://marketnewstoday-backend.herokuapp.com/user' || 'http://localhost:4000/user/'
 
     //State
     const [sessionData, setSessionData] = React.useState([])
@@ -20,7 +23,7 @@ const Show = () => {
     const djangoBackendData = async () => {
         if(localStorage.getItem('SessionEmail') !== null){
             const data = await Axios.get(
-                `http://localhost:8000/api/users/`
+                `${backend_url}/api/users/`
             )
             console.log('django_backend', data)
             const session_info = []
@@ -35,8 +38,10 @@ const Show = () => {
                 setSessionData(session_info)
                 setDone(true)
             } else {
-                console.log('There is not a logged in user. Please log in')
+                alert('It appears no favorite stocks were saved. Please save your favorite company stocks and come back to this page :)')
+                history.push('/')
             }
+            console.log(sessionData)
         }
 
         
@@ -47,6 +52,7 @@ const Show = () => {
             setTimeout(()=>{
                 // getAllData()
                 djangoBackendData()
+            
             }, 1000)
 
         
@@ -81,8 +87,12 @@ const Show = () => {
             
             : 
             
+            <>
+            {alert('There is not a logged in user. Please log in / register :) ')}
+            {history.push('/')}
+            </>
             
-            alert('There is logged in user. Please log in / register :) ')}
+            }
             
         </div>
         

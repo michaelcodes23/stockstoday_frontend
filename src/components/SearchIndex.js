@@ -6,14 +6,8 @@ import * as VsIcons from 'react-icons/vsc';
 
 
 function GetSearch () {
-     //Backend API call to submit favorite Stock data
-    const djangoBackend = async () => {
-        const data = await Axios.get(
-            `http://localhost:8000/api/users/`
-        )
-        console.log('django_backend', data)
-        console.log(data.data[0])
-    }
+
+
 
     //States
     const [indexData, setIndexData] = React.useState([])
@@ -21,7 +15,7 @@ function GetSearch () {
     const [value, setValue] = React.useState('')
     const [disable, setDisable] = React.useState(false)
     //Backend Link
-    const backend_url = 'https://marketnewstoday-backend.herokuapp.com/user' || 'http://localhost:4000/user/'
+    const backend_url = 'https://marketnewstoday-djangobackend.herokuapp.com' || 'http://localhost:8000'
     //Financial Modeling Prep Variables
     const {REACT_APP_KEY} = process.env
     const url = 'https://financialmodelingprep.com/api/v3/';
@@ -29,10 +23,11 @@ function GetSearch () {
     const news = 'stock_news?tickers='
     const api_search = 'search?query=';
   
-
+         //Backend API call to submit favorite Stock data
     const djangoAddFav = async (symbol) => {
         Axios.post(
-            `http://localhost:8000/api/users/`,{
+            // `http://localhost:8000/api/users/`,{
+            `${backend_url}/api/users/`,{
                 name: localStorage.getItem('SessionName'),
                 email: localStorage.getItem('SessionEmail'),
                 ticker: symbol
@@ -80,7 +75,7 @@ function GetSearch () {
         let index_tickers = ['AAPL', 'NFLX', 'MSFT','JPM', 'AMZN']
         const rand_ticker = index_tickers[Math.floor(Math.random()* index_tickers.length)]
         index_update(rand_ticker)
-        djangoBackend()
+
     }, [])
 
 

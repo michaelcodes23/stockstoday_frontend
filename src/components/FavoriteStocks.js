@@ -7,10 +7,11 @@ import Axios from 'axios';
 
 const FavStocks = ({name, ticker_data, session_id}) => {
     //Backend API Call to Delete Stock
-    const backend_url = 'https://marketnewstoday-backend.herokuapp.com/user' || 'http://localhost:4000/user/'
+    const backend_url = 'https://marketnewstoday-djangobackend.herokuapp.com' || 'http://localhost:8000'
+    // const backend_url = 'https://marketnewstoday-backend.herokuapp.com/user' || 'http://localhost:4000/user/'
     const deleteStock = async (data) => {
         console.log(data)
-        Axios.delete(`http://localhost:8000/api/users/${data}/`)
+        Axios.delete(`${backend_url}/api/users/${data}/`)
         window.location.reload()
     }
     
